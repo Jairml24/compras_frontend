@@ -12,7 +12,7 @@ function Mensaje({ accion, trigger}) {
         }
         else if (accion == 'delete_producto') {
             setMensaje('el producto eliminó correctamente')
-            setColor('violet')
+            setColor('red')
         }
 
         else if (accion == 'store') {
@@ -22,7 +22,7 @@ function Mensaje({ accion, trigger}) {
 
         else if (accion == 'store_producto') {
             setMensaje('Producto insertado correctamente correctamente')
-            setColor('emerald')
+            setColor('green')
         }
 
         if (!accion == '') {
