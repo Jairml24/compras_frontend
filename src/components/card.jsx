@@ -11,7 +11,7 @@ function Card({ id, fecha, productos, total, funcion, eliminarCompra, btnProduct
             <div>
                 <p className='text-green-800'>Fecha compra:  {(format(addDays(fecha, 1), 'dd-MM-yyyy'))}</p>
                 <p className='text-blue-500'>N° productos:  {productos}</p>
-                <p className='text-red-600'>Total: S/.   {total}</p>
+                <p className='text-red-600'>Total: S/.   {parseFloat(total.toFixed(2))}</p>
             </div>
             <div className="text-gray-500">
                 <ArrowDropDownIcon className=" hover:text-gray-900" />

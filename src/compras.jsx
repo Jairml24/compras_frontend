@@ -10,6 +10,7 @@ function Compras() {
     const [showId, setShowId] = useState(false)
     const [accionRealizada, setAccionRealizada] = useState('');
     const [idRegistroCompraProducto, setIdRegistroCompraProducto] = useState([null,false]);
+    const [carga,SetCarga]=useState(false)
     const apiUrl = process.env.REACT_APP_API_URL
 
     useEffect(() => {
@@ -19,6 +20,7 @@ function Compras() {
     // obtener lista de compras 
     const getCompras = async () => {
         try {
+            SetCarga(true)
             const response = await fetch(`${apiUrl}/`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -26,6 +28,7 @@ function Compras() {
             const data = await response.json();
             setCompras(data);
             setError(null)
+            SetCarga(false)
         } catch (err) {
             showError(err)
         }
@@ -34,6 +37,7 @@ function Compras() {
     // registrar nueva compra
     const registrarCompra = async () => {
         try {
+            SetCarga(true)
             const response = await fetch(`${apiUrl}/compras`, {
                 method: 'POST',
                 headers: {
@@ -45,6 +49,7 @@ function Compras() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             setAccionRealizada('store')
+            SetCarga(false)
             getCompras()
         } catch (err) {
             showError(err)
@@ -64,6 +69,7 @@ function Compras() {
     // registrar nueva compra
     const registrarProductoCompra = async (idCompra, producto) => {
         try {
+            SetCarga(true)
             const response = await fetch(`${apiUrl}/compras/${idCompra}/productos`, {
                 method: 'POST',
                 headers: {
@@ -87,6 +93,7 @@ function Compras() {
         const confirmacion = window.confirm('¿Estás seguro que deseas eliminar la compra?');
         if (confirmacion) {
             try {
+                SetCarga(true)
                 const response = await fetch(`${apiUrl}/${id}`, {
                     method: 'DELETE',
                 });
@@ -94,6 +101,7 @@ function Compras() {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 setAccionRealizada('delete')
+                SetCarga(false)
                 getCompras()
             } catch (err) {
                 showError(err)
@@ -108,6 +116,7 @@ function Compras() {
         const confirmacion = window.confirm('¿Estás seguro que deseas eliminar la compra?');
         if (confirmacion) {
             try {
+                SetCarga(true)
                 const response = await fetch(`${apiUrl}/compra/${id_compra}/producto/${id_producto}`, {
                     method: 'DELETE',
                 });
@@ -115,6 +124,7 @@ function Compras() {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 setAccionRealizada('delete_producto')
+                SetCarga(false)
                 getCompras()
             } catch (err) {
                 showError(err)
@@ -147,7 +157,12 @@ function Compras() {
             <button className='mt-4 p-2 text-white bg-blue-600 rounded-lg cursor:pointer hover:bg-blue-700 '
                     onClick={registrarCompra}>
                     Registrar nueva compra
-            </button>
+            </button> 
+            {
+                carga &&(
+                    <span className="ml-3 bg-red-600 p-1 rounded-sm text-white">Cargando...</span>
+                )
+            }
             <FormProducto idCompra={idRegistroCompraProducto[0]}
                     cerrarFormulario={cerrarFormulario}
                     registrarProductoCompra={(idCompra,producto) => registrarProductoCompra(idCompra,producto)}
